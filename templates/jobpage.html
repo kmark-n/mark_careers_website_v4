@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mark_Careers</title>
+    {% include 'bootstrap.html' %}
+
+  </head>
+  <body>
+    {%include 'nav.html' %}
+    {%include 'banner.html'%}
+    <div class="container">
+			<h1 class="text-center mt-3 mb-4">MARK CAREERS</h1>
+      
+      <h3>{{ job['title'] }}</h3>
+      <p class="lead">{{ job['location'] }}</p>
+
+      <h4>REQUIREMENTS</h4>
+      <ul>
+        {% for line in job.REQUIREMENTS.split("\n") %}
+        <li>{{line}}</li>
+        {% endfor %}
+      </ul>
+  
+      <h4>RESPONSIBILITIES</h4>
+      <ul>
+        {% for line in job.RESPONSIBILITIES.split("\n") %}
+        <li>{{line}}</li>
+        {% endfor %}
+      </ul>
+      
+      <h4>Salary</h4>
+      <p>{{ job['CURRENCY'] }} {{ job['SALARY'] }}</p>
+      {% include 'application_form.html' %}
+
+      {%include 'footer.html'%}
+    </div>
+  </body>
+</html>
