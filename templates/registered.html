@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mark careers</title>
+    {% include 'bootstrap.html' %}
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
+    
+  </head>
+  <body>
+    {% include 'reg_nav.html' %}
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8">
+          <div class="mt-80">
+            <p><b>Your account has successfully been registered!</b></p>
+            <b>Name</b>
+            <div class="mb-2">{{ details['name'] }}</div>
+
+            <b>Email</b>
+            <div class="mb-2">{{details['email'] }}</div>
+          </div>
+            
+            
+        </div>
+    
+        <div class="col-md-4">
+          <div class="mt-80">
+          {% include 'reg_success_logo.html' %}
+          </div>
+        </div>
+        
+      </div>
+    
+    </div>
+  </body>
+</html>

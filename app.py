@@ -17,7 +17,7 @@ def register_page():
 def registering_page():
   data=request.form
   add_user_details_to_db(data)
-  return render_template('confirmed_registeration.html', details=data)
+  return render_template('registered.html', details=data)
 
 @app.route("/login_validation", methods=['POST'])
 def login_validation():
