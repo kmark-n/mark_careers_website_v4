@@ -33,3 +33,22 @@ def add_application_to_db(job_id, data):
   with engine.connect() as conn:
     query=text("INSERT INTO applications(job_id, full_name, email, linkedin_url, education, work_experience, resume_url) VALUES (:job_id, :full_name, :email, :linkedin_url, :education, :work_experience, :resume_url)")
     conn.execute (query, {"job_id":job_id, "full_name":data['full_name'], "email":data['email'], "linkedin_url":data['linkedin_url'], "education":data['education'], "work_experience":data['work_experience'], "resume_url":data['resume_url']})
+
+def add_user_details_to_db(data):
+  with engine.connect() as conn:
+    query=text("INSERT INTO users(name, email, password) VALUES (:name, :email, :password)")
+    conn.execute (query, {"name":data['name'], "email":data["email"], "password":data["password"]})
+
+
+def db_login_validation(name, email, password):
+  with engine.connect() as conn:
+    query=text("SELECT * FROM users WHERE name = :name AND email= :email AND password= :password")
+    result=conn.execute(query, {"name":name, "email":email, "password":password})
+    row=result.fetchone()
+    if row is None:
+      return None
+    else:
+      column_name=result.keys()
+      return dict(zip(column_name, row))
+      
+

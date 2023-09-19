@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>confirmed registeration</title>
+    {% include 'bootstrap.html' %}
+  </head>
+  <body>
+    {%include 'nav.html' %}
+    {%include 'banner.html'%}
+    <div class="container">
+			<h1 class="text-center mt-3 mb-4">MARK CAREERS</h1>
+
+      <p><b>Your registeration at Mark careers has been a success!!</b></p>
+      <b>Name</b>
+      <div class="mb-2">{{ details['name'] }}</div>
+  
+      <b>Email</b>
+      <div class="mb-2">{{ details['email'] }}</div>
+  
+      {%include 'footer.html'%}
+  </body>
+</html>
