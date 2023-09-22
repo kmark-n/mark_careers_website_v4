@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mark careers</title>
+    {% include 'bootstrap.html' %}
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
+  </head>
+  <body class=bg-nav>
+    {% include 'nav.html' %}
+    <div class="container">
+      <div class="card mt-80">
+        <div class="card-body">
+          <form action="/job_status" method="post">
+            <img class="mb-4" src="https://markcareerswebsitev3.markndungu.repl.co/static/mark_careers.jpeg" alt="" width="72" height="57">
+            <h1 class="h3 mb-3 fw-normal">Check job application status</h1>
+            
+            <div class="form-floating">
+              <input type="text" class="form-control" name="full_name" id="floatingInput" placeholder="name" required>
+              <label for="floatingInput">Enter name:</label>
+            </div>
+    
+            <div class="form-floating">
+              <input type="email" class="form-control" name="email" id="floatingInput" placeholder="name@example.com" required>
+              <label for="floatingInput">Enter email address:</label>
+            </div>
+            {% if error %}
+            <p class="mt-2 center-align-red">{{error}}</p>
+            {% endif %}
+            <button class="mt-2 mb-2 btn btn-primary w-100 py-2" type="submit">Check Status</button>
+            
+          </form>
+        </div>
+      </div>
+  
+    </div>
+  </body>
+</html>

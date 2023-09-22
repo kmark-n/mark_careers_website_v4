@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mark careers</title>
+    {% include 'bootstrap.html' %}
+    {% include 'nav.html' %}
+    
+  </head>
+  <body>
+    <div class="text-center">
+    {% include 'people_working.html' %}
+    </div>
+    <h2 class="text-center mb-2"><b>Mark careers</b></h2>
+    <div class="container">
+      {% if error %}
+      <p>{{error}}</p>
+      {% endif %}
+      <p>{{ job['title'] }}</p>
+    </div>
+  </body>
+</html>

@@ -17,10 +17,10 @@ def load_jobs_from_db():
     jobs_list = [dict(zip(column_names, row)) for row in result.fetchall()]
     return jobs_list
 
-def load_job_from_db(id):
+def load_job_from_db(job_id):
     with engine.connect() as conn:
-        query = text("SELECT * FROM jobs WHERE id = :val")
-        result = conn.execute(query, {"val": id})
+        query = text("SELECT * FROM jobs WHERE job_id = :val")
+        result = conn.execute(query, {"val": job_id})
         row = result.fetchone()
 
     if row is None:
@@ -50,5 +50,25 @@ def db_login_validation(name, email, password):
     else:
       column_name=result.keys()
       return dict(zip(column_name, row))
-      
 
+def status_validation(full_name, email):
+  with engine.connect() as conn:
+    query=text("SELECT * FROM applications WHERE full_name= :full_name AND email= :email")
+    result=conn.execute(query, {"full_name":full_name, "email":email})
+    row=result.fetchone()
+    if row is None:
+      return None
+    else:
+      column_name=result.keys()
+      return dict(zip(column_name, row))
+      
+def status_results(id):
+  with engine.connect() as conn:
+    query=text("SELECT * FROM applications WHERE id= :val")
+    results=conn.execute(query, {"val":id})
+    row=results.fetchone()
+    if row is None:
+      return None
+    else:
+      column_name=results.keys()
+      return dict(zip(column_name, row))
