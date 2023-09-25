@@ -11,24 +11,13 @@
     <div class="container">
 			<h1 class="text-center mt-3 mb-4">MARK CAREERS</h1>
 
-      <p><b>Your application for the job role of <b>"{{job['title']}}"</b> at MARK CAREERS has been successfully submitted!</b></p>
-      <b>Full Name</b>
-      <div class="mb-2">{{ application['full_name'] }}</div>
+      <p class="fs-4">Your application for the job role of <b>"{{job['title']}}"</b> at MARK CAREERS has been successfully submitted!<br><br>Results for the <b>status'</b> of job applications are released within two weeks after an application is made.<br>To <a href="/status_form"<b>check the status</b></a> of your application, make sure to include the <b>full name</b> and <b>email</b> used during application.<br><br></p>
+      <b class="fs-4">Full Name</b>
+      <div class="mb-2 fs-4">{{ application['full_name'] }}</div>
   
-      <b>Email</b>
-      <div class="mb-2">{{ application['email'] }}</div>
+      <b class="fs-4">Email</b>
+      <div class="mb-2 fs-4">{{ application['email'] }}</div>
   
-      <b>Linkedin URL</b>
-      <div class="mb-2">{{ application['linkedin_url'] }}</div>
-  
-      <b>Education</b>
-      <div class="mb-2">{{ application['education'] }}</div>
-  
-      <b>Work Experience</b>
-      <div class="mb-2">{{ application['work_experience'] }}</div>
-  
-      <b>Resume URL</b>
-      <div class="mb-2">{{ application['resume_url'] }}</div>
       {%include 'footer.html'%}
   </body>
 </html>

@@ -13,16 +13,16 @@
               <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
               
               <div class="form-floating">
-                <input type="text" class="form-control" name="name" id="lfloatingusername" placeholder="username">
+                <input type="text" class="form-control" name="name" id="lfloatingusername" placeholder="username" required>
                 <label for="floatingInput">User name</label>
               </div>
   
               <div class="form-floating">
-                <input type="email" class="form-control" name="email" id="floatingInput" placeholder="name@example.com">
+                <input type="email" class="form-control" name="email" id="floatingInput" placeholder="name@example.com" required >
                 <label for="floatingInput">Email address</label>
               </div>
               <div class="form-floating">
-                <input type="password" class="form-control" name="password" id="floatingPassword" placeholder="Password">
+                <input type="password" class="form-control" name="password" id="floatingPassword" placeholder="Password" required>
                 <label for="floatingPassword">Password</label>
               </div>
   
@@ -36,7 +36,7 @@
               {% if error %}
               <p class="center-align-red">{{error}}</p>
               {% endif %}  
-              <p class="mt-3 mb-2 text-body-secondary">Don't have an account yet?<a href="/register_form/register">Create one</a></p>
+              <p class="mt-3 mb-2 text-body-secondary">Don't have an account yet?<a href="/register_form">Create one</a></p>
               <p class="mt-3 mb-3 text-body-secondary">&copy; 2023–2024</p>
             </form>
           </main>

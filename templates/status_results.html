@@ -12,10 +12,21 @@
     </div>
     <h2 class="text-center mb-2"><b>Mark careers</b></h2>
     <div class="container">
-      {% if error %}
-      <p>{{error}}</p>
+      {% if status %}
+      <div>
+        <p class="fs-4">{{status}}</p>
+      </div>
+      {% else %}
+      <div>
+        <h4><b>Job Title:</b> {{ job['title'] }}</h4>
+        <p class="lead"><b>location:</b> {{ job['location'] }}</p>
+        <br>
+        {% for line in application.status.split("\n") %}
+          <p class="fs-4">{{line}}</p>
+        {% endfor %}
       {% endif %}
-      <p>{{ job['title'] }}</p>
+    {% include 'footer.html' %}
+      </div>
     </div>
   </body>
 </html>

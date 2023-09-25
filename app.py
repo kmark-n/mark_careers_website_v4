@@ -55,23 +55,27 @@ def status_check():
   row=status_validation(full_name, email)
   if row is not None:
     session['id']=row['id']                     
-    return redirect('status_results')
+    return redirect(f'/status_results/{row["id"]}')
   else:
     error_message="wrong name or email"
     return render_template('status_form.html', error=error_message)
 
-@app.route("/status_results")
-def application_status():
-  id=session.get('id')
-  job_id=id
-  job=load_job_from_db(job_id)
+@app.route("/status_results/<id>")
+def application_status(id):
   application=status_results(id)
-
-  if job is not None and application is not None:
-    return render_template('status_results.html', application=application, job=job)
+  if application:
+    job_id=application['job_id']
+    job=load_job_from_db(job_id)
+    if application['status']:
+      return render_template('status_results.html', application=application, job=job)
+    else:
+      status_message="Your status has not yet been updated"
+      return render_template('status_results.html', status=status_message)
   else:
-    error_message="Job or application not found"
-    return render_template('status_results', error=error_message)
+    error_message="wrong name or email"
+    return render_template('status_form.html', error=error_message)
+    
+
 
 @app.route("/job/<job_id>")
 def show_job(job_id):
