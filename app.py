@@ -1,10 +1,16 @@
 from flask import Flask, render_template, jsonify, request, redirect, session, url_for
 from database import db_login_validation, load_jobs_from_db, load_job_from_db, add_application_to_db, add_user_details_to_db, db_login_validation, status_validation, status_results
-
+from flask_sqlalchemy import SQLAlchemy
+import os
+from admin_setup import configure_admin
 
 app = Flask(__name__)
 app.secret_key = b'\xbb\x80X\xde>\xfd\xe1\xc0u;\x94\x7f\xa3v\xe4\x1d'
 
+app.config['SQLALCHEMY_DATABASE_URI']=os.environ['DB_CONNECTION_STRING']
+db=SQLAlchemy(app)
+
+configure_admin(app, db)
 @app.route('/')
 def login():
   return render_template('login.html')
