@@ -1,9 +1,10 @@
-from flask import Flask, render_template, jsonify, request, redirect, session, url_for
+from flask import Flask, render_template, jsonify, request, redirect, session, url_for, flash
 from database import db_login_validation, load_jobs_from_db, load_job_from_db, add_application_to_db, add_user_details_to_db, db_login_validation, status_validation, status_results
 import os
 import pymysql
-from models import db
+from models import db, Users, Jobs, Applications
 from admin_setup import admin
+from sqlalchemy.exc import IntegrityError
 
 def create_app(): 
   app = Flask(__name__)
@@ -15,10 +16,14 @@ def create_app():
             "ssl_ca": "/etc/ssl/cert.pem"
         }
     }
-}
+  }
+
+  db.init_app(app)
+
+  with app.app_context():
+    db.create_all() 
 
   admin.init_app(app)
-  db.init_app(app)
 
    
   @app.route('/')
@@ -26,15 +31,27 @@ def create_app():
     return render_template('login.html')
   
   @app.route('/register_form')
-  def register_page():
+  def register_form():
     return render_template('register_form.html')
   
-  @app.route("/register_form/register", methods=['POST'])
-  def registering_page():
-    data=request.form
-    add_user_details_to_db(data)
-    return render_template('registered.html', details=data)
   
+  @app.route("/register_form/registered", methods=['POST', 'GET'])
+  def register_complete():
+    if request.method == 'POST':
+      name=request.form['name']
+      email=request.form['email']
+      password=request.form['password']
+      existing_user=Users.query.filter_by(email=email).first()
+      if existing_user:
+        flash('Email is already in use. Please choose a different email.', 'error')
+        return redirect(url_for('register_form'))
+      else:
+        new_user=Users(name=name, email=email, password=password)
+        db.session.add(new_user)
+        db.session.commit()
+        flash('Registeration success!', 'success')
+        return render_template('registered.html', name=name, email=email)
+
   @app.route("/login_validation", methods=['POST'])
   def login_validation():
     name=request.form.get('name')
