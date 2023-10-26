@@ -1,23 +1,36 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import bcrypt
+from flask_login import UserMixin
+
 
 db=SQLAlchemy()
 
-class Users(db.Model):
+class Users(db.Model, UserMixin):
   __tablename__ = 'users'
   user_id=db.Column(db.Integer, primary_key=True, autoincrement=True)
   name=db.Column(db.String(256), nullable=False)
   email=db.Column(db.String(256), unique=True)
   password=db.Column(db.String(256))
-  def __init__(self, name, email, password):
+  is_admin=db.Column(db.Boolean, default=False)
+  def __init__(self, user_id, name, email, password, is_admin):
+    self.user_id=user_id
     self.name=name
     self.email=email
     self.password=bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+    self.is_admin=is_admin
 
   def check_password(self, password):
     return bcrypt.checkpw(password.encode('utf-8'), self.password.encode('utf-8'))
-
+  
+  def get_id(self):
+    return str(self.user_id)
+  
+  
+  @property
+  def is_active(self):
+    return True
+  
 class Jobs(db.Model):
   __tablename__ = 'jobs'
   job_id=db.Column(db.Integer, primary_key=True, autoincrement=True)

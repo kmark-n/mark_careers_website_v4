@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mark careers</title>
+    {% include 'bootstrap.html' %}
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
+    <style>
+      .container {
+        width: 400px;
+        height: 150px;
+      }
+    </style>
+</head>
+<body class="bg-nav">
+  <div class="container">
+    <div class="card mt-80">
+      <main class="form-signin w-100 m-auto">
+        <form action="{{url_for('pwd_reset_request')}}" method="post">
+          <img class="mb-4" src="https://markcareerswebsitev3.markndungu.repl.co/static/mark_careers.jpeg" alt="" width="72" height="57">
+          <h1 class="h3 mb-3 fw-normal">Reset Password</h1>
+
+          <div class="form-floating">
+            <input type="email" class="form-control" name="email" id="floatingInput" placeholder="name@example.com" required >
+            <label for="floatingInput">Email address</label>
+          </div>
+
+          <button class="btn btn-primary w-100 py-2" type="submit">Reset</button>
+          {% with messages=get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+              <div class="alert {% if category=='success' %}alert-success{% elif category=='error' %}alert-danger{% endif %}">
+                {{message}}
+              </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+          <p><a href="/" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">login</a></p>
+        </form>
+      </main>
+    </div>
+  </div>    
+</body>
+</html>
