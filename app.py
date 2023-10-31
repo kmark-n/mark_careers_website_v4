@@ -7,9 +7,8 @@ from admin_setup import admin
 from middleware import auth, guest
 from itsdangerous.serializer import Serializer
 from flask_mail import Message, Mail
-from flask_login import LoginManager, login_user
-
-login_manager=LoginManager()
+from werkzeug.utils import secure_filename
+import secrets as secrets
 
 def create_app(): 
   app = Flask(__name__)
@@ -22,6 +21,7 @@ def create_app():
         }
     }
   }
+  app.config['UPLOAD_FOLDER']='static/profile_pic'
 
   app.config['MAIL_SERVER'] = 'smtp.gmail.com'
   app.config['MAIL_PORT'] = 465
@@ -38,7 +38,7 @@ def create_app():
     db.create_all() 
 
   admin.init_app(app)
-  login_manager.init_app(app)
+  
 
    
   @app.route('/')
@@ -58,12 +58,19 @@ def create_app():
       name=request.form['name']
       email=request.form['email']
       password=request.form['password']
+      profile_pic=request.files['profile_pic']
+      if profile_pic:
+        filename=secure_filename(profile_pic.filename)
+        random_hex=secrets.token_hex(8)
+        pic_name=random_hex + filename
+        profile_pic.save(os.path.join(os.path.abspath(os.path.dirname(__file__)), app.config['UPLOAD_FOLDER'], pic_name))
+        profile_pic=pic_name
       existing_user=Users.query.filter_by(email=email).first()
       if existing_user:
         flash('Email is already in use. Please choose a different email.', 'error')
         return redirect(url_for('register_form'))
       else:
-        new_user=Users(name=name, email=email, password=password)
+        new_user=Users(name=name, email=email, password=password, profile_pic=profile_pic)
         db.session.add(new_user)
         db.session.commit()
         flash('Registeration success!', 'success')
@@ -77,17 +84,11 @@ def create_app():
       password=request.form['password']
       user=Users.query.filter_by(name=name, email=email).first()
       if user and user.check_password(password):
-        login_user(user)
         session['user_id']=user.user_id
-        return redirect('/home')
+        return redirect(url_for('mark_careers'))
       else:
         error_message="Invalid user"
         return render_template('login.html', error=error_message)
-  @login_manager.user_loader
-  def load_user(user_id):
-    return Users.query.get(int(user_id))
-      
-  
       
   @app.route('/pwd_reset_req', methods=['GET', 'POST'])
   def pwd_reset_request():
@@ -147,13 +148,16 @@ def create_app():
   def logout():
     session.pop('user_id', None)
     return redirect('/')
+  
          
   @app.route("/home")
   @auth
   def mark_careers():
       user=Users.query.get(session['user_id'])
+      name=user.name
+      profile_pic=url_for('static', filename='profile_pic/' + user.profile_pic)
       jobs_list = load_jobs_from_db()
-      return render_template('home.html', jobs = jobs_list, user=user)
+      return render_template('home.html', jobs = jobs_list, user=user, profile_pic=profile_pic, name=name)
   
   @app.route("/api/jobs")
   def list_jobs():
@@ -162,7 +166,9 @@ def create_app():
   
   @app.route("/status_form")
   def status_form():
-    return render_template('status_form.html')
+    user=Users.query.get(session['user_id'])
+    profile_pic=url_for('static', filename='profile_pic/' + user.profile_pic)
+    return render_template('status_form.html', profile_pic=profile_pic)
   
   @app.route("/job_status", methods=['POST'])
   def status_check():
@@ -178,32 +184,38 @@ def create_app():
   
   @app.route("/status_results/<id>")
   def application_status(id):
+    user=Users.query.get(session['user_id'])
+    profile_pic=url_for('static', filename='profile_pic/' + user.profile_pic)
     application=status_results(id)
     if application:
       job_id=application['job_id']
       job=load_job_from_db(job_id)
       if application['status']:
-        return render_template('status_results.html', application=application, job=job)
+        return render_template('status_results.html', application=application, job=job, profile_pic=profile_pic)
       else:
         status_message="Your status has not yet been updated"
-        return render_template('status_results.html', status=status_message)
+        return render_template('status_results.html', status=status_message, profile_pic=profile_pic)
     else:
       error_message="wrong name or email"
       return render_template('status_form.html', error=error_message)
   
   @app.route("/job/<job_id>")
   def show_job(job_id):
+    user=Users.query.get(session['user_id'])
+    profile_pic=url_for('static', filename='profile_pic/' + user.profile_pic)
     job = load_job_from_db(job_id)
     if not job:
       return "Not found", 404
-    return render_template('jobpage.html', job = job)
+    return render_template('jobpage.html', job = job, profile_pic=profile_pic)
   
   @app.route("/job/<job_id>/apply", methods=['post'])
   def apply_to_job(job_id):
+    user=Users.query.get(session['user_id'])
+    profile_pic=url_for('static', filename='profile_pic/' + user.profile_pic)
     data = request.form
     job = load_job_from_db(job_id)
     add_application_to_db(job_id, data)
-    return render_template('application_submitted.html', application=data, job = job)
+    return render_template('application_submitted.html', application=data, job=job, profile_pic=profile_pic)
     
   return app
 

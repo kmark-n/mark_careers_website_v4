@@ -13,12 +13,14 @@ class Users(db.Model, UserMixin):
   email=db.Column(db.String(256), unique=True)
   password=db.Column(db.String(256))
   is_admin=db.Column(db.Boolean, default=False)
-  def __init__(self, user_id, name, email, password, is_admin):
+  profile_pic=db.Column(db.String(256), nullable=False, default='default.jpeg')
+  def __init__(self, name, email, password, user_id=None, is_admin=False, profile_pic=None):
     self.user_id=user_id
     self.name=name
     self.email=email
     self.password=bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
     self.is_admin=is_admin
+    self.profile_pic=profile_pic
 
   def check_password(self, password):
     return bcrypt.checkpw(password.encode('utf-8'), self.password.encode('utf-8'))
