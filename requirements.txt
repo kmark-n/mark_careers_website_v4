@@ -3,3 +3,4 @@ gunicorn
 sqlalchemy
 pymysql
 flask_sqlalchemy
+bcrypt==3.2.0
