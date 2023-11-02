@@ -7,5 +7,4 @@ bcrypt==3.2.0
 itsdangerous
 Flask-Mail
 Werkzeug
-secrets
 Flask-Admin
