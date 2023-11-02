@@ -1,5 +1,5 @@
 from flask import session, redirect, url_for
-import functools
+import functools as functools
 
 def auth(view_func):
     @functools.wraps(view_func)

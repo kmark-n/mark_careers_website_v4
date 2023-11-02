@@ -2,7 +2,7 @@ from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from models import db, Users, Jobs, Applications
 from flask import abort, session
-from flask_login import current_user
+
 
 
 admin=Admin()
