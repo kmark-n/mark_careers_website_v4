@@ -4,3 +4,9 @@ sqlalchemy
 pymysql
 flask_sqlalchemy
 bcrypt==3.2.0
+functools
+itsdangerous
+Flask-Mail
+Werkzeug
+secrets
+Flask-Admin
