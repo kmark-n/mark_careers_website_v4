@@ -65,6 +65,8 @@ def create_app():
         pic_name=random_hex + filename
         profile_pic.save(os.path.join(os.path.abspath(os.path.dirname(__file__)), app.config['UPLOAD_FOLDER'], pic_name))
         profile_pic=pic_name
+      else:
+        profile_pic='default.jpeg'
       existing_user=Users.query.filter_by(email=email).first()
       if existing_user:
         flash('Email is already in use. Please choose a different email.', 'error')
@@ -172,9 +174,10 @@ def create_app():
   
   @app.route("/job_status", methods=['POST'])
   def status_check():
-    full_name=request.form.get('full_name')
+    firstname=request.form.get('firstname')
+    lastname=request.form.get('lastname')
     email=request.form.get('email')
-    row=status_validation(full_name, email)
+    row=status_validation(firstname, lastname, email)
     if row is not None:
       session['id']=row['id']                     
       return redirect(f'/status_results/{row["id"]}')

@@ -16,15 +16,19 @@
 
       <h4>REQUIREMENTS</h4>
       <ul>
-        {% for line in job.REQUIREMENTS.split("\n") %}
-        <li>{{line}}</li>
+        {% for line in job.REQUIREMENTS.split(".") %}
+          {% if line.strip() %}
+            <li>{{line.strip()}}.</li>
+          {% endif %}
         {% endfor %}
       </ul>
   
       <h4>RESPONSIBILITIES</h4>
       <ul>
-        {% for line in job.RESPONSIBILITIES.split("\n") %}
-        <li>{{line}}</li>
+        {% for line in job.RESPONSIBILITIES.split(".") %}
+          {% if line.strip() %}
+            <li>{{line.strip()}}.</li>
+          {% endif %}
         {% endfor %}
       </ul>
       

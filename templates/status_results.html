@@ -8,7 +8,7 @@
   </head>
   <body>
     <div class="text-center">
-    {% include 'people_working.html' %}
+    {% include 'application_pic.html' %}
     </div>
     <h2 class="text-center mb-2"><b>Mark careers</b></h2>
     <div class="container">
@@ -18,12 +18,18 @@
       </div>
       {% else %}
       <div>
-        <h4><b>Job Title:</b> {{ job['title'] }}</h4>
-        <p class="lead"><b>location:</b> {{ job['location'] }}</p>
+        <h4 style="color:rgb(120,120,120); margin-bottom:4px;">
+          {{job['title']}}
+        </h4>
+        {%if 'location' in job%}
+        <div>
+          <b>location:</b>{{job['location']}}
+        </div>  
+        {%endif%}
         <br>
-        {% for line in application.status.split("\n") %}
-          <p class="fs-4">{{line}}</p>
-        {% endfor %}
+        <h4 style="color: black; margin-bottom:4px;">
+          {{application['status']}}
+        </h4>
       {% endif %}
     {% include 'footer.html' %}
       </div>
