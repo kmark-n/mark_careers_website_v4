@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mark careers</title>
+    <link rel="short cut icon" href="{{url_for('static', filename='favicon.png')}}">
     {% include 'bootstrap.html' %}
     <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
     <style>
@@ -18,7 +19,7 @@
     <div class="card mt-80">
       <main class="form-signin w-100 m-auto">
         <form action="{{url_for('pwd_reset_request')}}" method="post">
-          <img class="mb-4" src="https://markcareerswebsitev3.markndungu.repl.co/static/mark_careers.jpeg" alt="" width="72" height="57">
+          <img class="mb-4 rounded" src="https://markcareerswebsitev3.markndungu.repl.co/static/mark_careers.jpeg" alt="" width="72" height="57">
           <h1 class="h3 mb-3 fw-normal">Reset Password</h1>
 
           <div class="form-floating">
