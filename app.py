@@ -151,7 +151,6 @@ def create_app():
     session.pop('user_id', None)
     return redirect('/')
   
-         
   @app.route("/home")
   @auth
   def mark_careers():
@@ -160,6 +159,26 @@ def create_app():
       profile_pic=url_for('static', filename='profile_pic/' + user.profile_pic)
       jobs_list = load_jobs_from_db()
       return render_template('home.html', jobs = jobs_list, user=user, profile_pic=profile_pic, name=name)
+  
+  @app.route("/profile_update", methods=['POST', 'GET'])
+  def update_profile():
+    user=Users.query.get(session['user_id'])
+    if user:
+      if request.method == 'POST':
+        new_name=request.form['new_name']
+        new_profile_pic=request.files['new_profile_pic']
+        if new_name:
+          user.name=new_name
+        if new_profile_pic:
+          filename=secure_filename(new_profile_pic.filename)
+          random_hex=secrets.token_hex(8)
+          new_pic=random_hex + filename
+          new_profile_pic.save(os.path.join(os.path.abspath(os.path.dirname(__file__)), app.config['UPLOAD_FOLDER'], new_pic))
+          user.profile_pic=new_pic
+        if new_name or new_profile_pic:
+          db.session.commit()
+          flash('Account  updated successfully.', 'success')
+    return render_template('profile_update.html')
   
   @app.route("/api/jobs")
   def list_jobs():

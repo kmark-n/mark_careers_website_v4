@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mark careers</title>
+    <link rel="short cut icon" href="{{url_for('static', filename='favicon.png')}}">
+    {% include 'bootstrap.html' %}
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
+  </head>
+  <body class=bg-nav>
+    <div class="container">
+        <div class="card mt-80">
+          <div class="card-body">
+            <form action="{{url_for('update_profile')}}" method="post" enctype="multipart/form-data">
+              <img class="mb-4" src="https://markcareerswebsitev3.markndungu.repl.co/static/mark_careers.jpeg" alt="" width="72" height="57">
+              <h1 class="h3 mb-3 fw-normal">Update profile</h1>
+              
+              <div class="form-floating">
+                <input type="text" class="form-control" name="new_name" id="floatingInput" placeholder="name">
+                <label for="floatingInput">Enter user name:</label>
+              </div>
+
+              <div class="mt-3 mb-3">
+                <label class="form-label">Profile picture</label>
+                <input type="file" class="form-control" name="new_profile_pic">   
+              </div>
+              <button class="btn btn-primary w-100 py-2" type="submit">Update</button><br>
+              {% for message in get_flashed_messages() %}
+              <div class="alert alert-success">
+                {{message}}
+              </div>
+              {% endfor %}
+              <p><a href="/home" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Go to the homepage</a></p>
+              
+            </form>
+          </div>
+        </div>
+        
+      </div>
+    
+  </body>
+</html>
